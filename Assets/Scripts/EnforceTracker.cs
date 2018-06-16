@@ -14,6 +14,9 @@ public class EnforceTracker : MonoBehaviour
         for (uint i = 0; i <= 16; i++)
         {
             var result = new System.Text.StringBuilder((int)64);
+            if (OpenVR.System == null ) {
+                Debug.Log("no systerm?");
+            }
             OpenVR.System.GetStringTrackedDeviceProperty(i, ETrackedDeviceProperty.Prop_RenderModelName_String, result, 64, ref error);
             if (result.ToString().Contains("tracker"))
             {

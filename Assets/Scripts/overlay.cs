@@ -62,7 +62,7 @@ public class overlay : MonoBehaviour
             var tex = new Texture_t
             {
                 handle = OverlayTexture.GetNativeTexturePtr(),
-                eType = SteamVR.instance.graphicsAPI,
+                eType = SteamVR.instance.textureType,
                 eColorSpace = EColorSpace.Auto
             };
             overlay.SetOverlayColor(_handle, 1f, 1f, 1f);
@@ -82,7 +82,7 @@ public class overlay : MonoBehaviour
             offset.pos.y /= OverlayReference.transform.localScale.y;
             offset.pos.z /= OverlayReference.transform.localScale.z;
             var t = offset.ToHmdMatrix34();
-            overlay.SetOverlayTransformTrackedDeviceRelative(_handle, 0, ref t);
+            //overlay.SetOverlayTransformTrackedDeviceRelative(_handle, 0, ref t);
         }
         else
         {
@@ -98,7 +98,7 @@ public class overlay : MonoBehaviour
         var tex = new Texture_t
         {
             handle = OverlayTexture.GetNativeTexturePtr(),
-            eType = SteamVR.instance.graphicsAPI,
+            eType = SteamVR.instance.textureType,
             eColorSpace = EColorSpace.Auto
         };
         overlay.SetOverlayTexture(_handle, ref tex);
@@ -112,8 +112,8 @@ public class overlay : MonoBehaviour
         var compositor = OpenVR.Compositor;
         if (compositor == null) return;
         compositor.GetLastPoses(_poses, _gamePoses);
-        SteamVR_Utils.Event.Send("new_poses", _poses);
-        SteamVR_Utils.Event.Send("new_poses_applied");
+        SteamVR_Events.NewPoses.Send(_poses);
+        SteamVR_Events.NewPosesApplied.Send();
     }
 
     public GameObject RotationTracker
